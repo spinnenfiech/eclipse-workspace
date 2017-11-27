@@ -1,0 +1,25 @@
+package test_package;
+
+public class das_affenprojekt_experimentieren
+{
+
+	public static void main(String[] args)
+	{
+		
+	}
+	
+	public static StringBuilder nRandom;
+	{
+		StringBuilder nRandomFill = new StringBuilder();
+		nRandomFill.setCharAt(1, (char) ('a' + 26*Math.random()));
+		nRandomFill.toString();
+		
+		nRandom.setLength(30);
+		nRandom.replace(1, 30, nRandomFill);
+		
+		for (int i = 1; i < nRandom.length(); i++)
+		{
+			System.out.println(nRandom);
+		}
+	}
+}
