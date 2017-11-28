@@ -11,13 +11,12 @@ public class das_affenprojekt_experimentieren
 		String nstring2 = new String(RandomTextausgabe2(30));
 		System.out.println(nstring);
 		StringBuilder nstringb = new StringBuilder(30);
-		String temporärstring = new String();
 		//nstringb.setCharAt(1, (char) ('a' + 26*Math.random()));
 		int f = 0;
 		while(true)
 		{
-			nstring.replaceAll(nstring, temporärstring);
-			nstring2.replaceAll(temporärstring, nstring);
+			nstring.replaceAll(nstring, nstring2);
+			nstring2.replaceAll(nstring2, nstring);
 			f++;
 			//System.out.println(f);
 		}

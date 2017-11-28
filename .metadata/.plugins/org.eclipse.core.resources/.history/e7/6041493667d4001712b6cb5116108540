@@ -17,7 +17,7 @@ public class das_affenprojekt_experimentieren
 		while(true)
 		{
 			nstring.replaceAll(nstring, temporärstring);
-			nstring2.replaceAll(temporärstring, nstring);
+			nstring2.replaceAll(nstring2, nstring);
 			f++;
 			//System.out.println(f);
 		}
