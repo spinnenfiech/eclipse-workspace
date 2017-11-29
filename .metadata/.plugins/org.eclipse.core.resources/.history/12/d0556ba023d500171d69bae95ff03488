@@ -14,6 +14,10 @@ public class das_affenprojekt_experimentieren
 		String temporärstring = new String();
 		//nstringb.setCharAt(1, (char) ('a' + 26*Math.random()));
 		nstring.replaceAll(nstring, nstring2);
+		while(nstring.equals(nstring2))
+		{
+			nstring2.replaceAll(nstring2, nstring);
+		}
 
 		//for (int i = 0; i < nstring.length(); i++)	//gibt jeden einzelnen Buchstabe pro Zeile aus
 		//{
@@ -40,7 +44,6 @@ public class das_affenprojekt_experimentieren
 		{				
 			text = text + zahl[r2.nextInt(zahl.length)];
 		}
-		text.getChars(1, 26, zahl, 1);
 		System.out.println(text);
 		System.out.println(text.length());
 		return text;

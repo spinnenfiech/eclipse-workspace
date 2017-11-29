@@ -43,7 +43,10 @@ public class das_affenprojekt_experimentieren
 		text.getChars(1, 26, zahl, 1);
 		System.out.println(text);
 		System.out.println(text.length());
-		return text;
+		while(text.length() >= 2)
+		{
+			return text = "";
+		}
 	}
 	
 	public static String RandomTextausgabe2(int j) 

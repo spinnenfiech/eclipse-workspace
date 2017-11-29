@@ -13,8 +13,15 @@ public class das_affenprojekt_experimentieren
 		StringBuilder nstringb = new StringBuilder(30);
 		String temporärstring = new String();
 		//nstringb.setCharAt(1, (char) ('a' + 26*Math.random()));
-		nstring.replaceAll(nstring, nstring2);
-
+		int f = 0;
+		while(f < 10)
+		{
+			nstring.replaceAll(nstring, temporärstring);
+			nstring2.replaceAll(temporärstring, nstring);
+			f++;
+			System.out.println(f);
+		}
+		
 		//for (int i = 0; i < nstring.length(); i++)	//gibt jeden einzelnen Buchstabe pro Zeile aus
 		//{
 			//System.out.println(nstring.charAt(i));
@@ -35,12 +42,16 @@ public class das_affenprojekt_experimentieren
 	{
 		char[] zahl = "abcdefghijklmnopqrstuvwxyz".toCharArray();
 		String text = "";
+		text.replaceFirst(text, text);
 		Random r2 = new Random();
-		for(int i = 0; i < zahl.length; i++)
-		{				
-			text = text + zahl[r2.nextInt(zahl.length)];
-		}
-		text.getChars(1, 26, zahl, 1);
+			for(int i = 0; i < zahl.length; i++)
+			{
+				text = text + zahl[r2.nextInt(zahl.length)];
+				while(true)
+				{
+					text.replaceFirst(text, text);
+				}
+			}
 		System.out.println(text);
 		System.out.println(text.length());
 		return text;
