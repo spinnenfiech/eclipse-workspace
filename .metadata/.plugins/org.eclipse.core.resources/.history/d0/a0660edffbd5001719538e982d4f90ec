@@ -27,14 +27,14 @@ public class das_affenprojekt_experimentieren
 		
 	}//main Ende
 	
-	public static char[] RandomTextausgabe() 
+	public static String RandomTextausgabe() 
 	{
 		char[] zahl = "abcdefghijklmnopqrstuvwxyz".toCharArray();
-		char[] text = new char[30];
+		String text = "";
 		Random r2 = new Random();
-		for(int i = 0; i < text.length; i++)
-		{
-			text = zahl[r2.nextInt(text.length)];
+		for(int i = 0; i < zahl.length; i++)
+		{				
+			text = text + zahl[r2.nextInt(zahl.length)];
 		}
 		return text;
 	}

@@ -7,7 +7,7 @@ public class das_affenprojekt_experimentieren
 
 	public static void main(String[] args)
 	{
-		String nstring = new String(RandomTextausgabe());
+		String nstring = new String(RandomTextausgabe(30));
 		System.out.println(nstring);
 		//nstringb.setCharAt(1, (char) ('a' + 26*Math.random()));
 
@@ -27,14 +27,17 @@ public class das_affenprojekt_experimentieren
 		
 	}//main Ende
 	
-	public static char[] RandomTextausgabe() 
+	public static String RandomTextausgabe(int j) 
 	{
 		char[] zahl = "abcdefghijklmnopqrstuvwxyz".toCharArray();
-		char[] text = new char[30];
+		String text = "";
 		Random r2 = new Random();
-		for(int i = 0; i < text.length; i++)
-		{
-			text = zahl[r2.nextInt(text.length)];
+		text.replace('a', zahl[r2.nextInt(zahl.length)]);
+		System.out.println(text);
+		System.out.println(text.length());
+		for(int i = 0; i < zahl.length; i++)
+		{				
+			text = text + zahl[r2.nextInt(zahl.length)];
 		}
 		return text;
 	}
