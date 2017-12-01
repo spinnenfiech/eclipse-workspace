@@ -34,7 +34,7 @@ public class das_affenprojekt_experimentieren
 		Random r2 = new Random();
 		for(int i = 0; i < text.length; i++)
 		{
-			text = zahl[r2.nextInt(text.length)];
+			text[i] = zahl[r2.nextInt(zahl.length)];
 		}
 		return text;
 	}
