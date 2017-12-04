@@ -11,7 +11,7 @@ import javafx.stage.Stage;
 public class hud extends Application
 {
 	@Override
-	public void start(Stage firstStage) throws Exception
+	public void start(Stage firstStage)
 	{
 		VBox windowVBox = new VBox();
 		Scene firstScene = new Scene(windowVBox, 500, 250);
@@ -23,11 +23,19 @@ public class hud extends Application
 		Label randomStringLabel = new Label();
 		Label timeLabel = new Label();
 		
+		firstStage.setScene(firstScene);
+		firstStage.setTitle("Suchmaschine");
+		firstStage.show();
 		startButton.setText("Start");
 		restartButton.setText("Nochmal");
 		winLabel.setText("ERFOLG");
 		percentageLabel.setText("*noch nicht erledigt*");
-		randomStringLabel.setText(RandomTextausgabe());
+		randomStringLabel.setText("*noch nicht erledigt*");
 		timeLabel.setText("*noch nicht erledigt*");
+		windowVBox.getChildren().add(startButton);
+	}
+	public static void main(String[] args)
+	{
+		launch();
 	}
 }
