@@ -34,5 +34,5 @@ public class Hallo_Welt_Main extends Application
     public static void main(String[] args)
     {
         launch(args);
-    }
+    },
 }
