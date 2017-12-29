@@ -2,9 +2,14 @@ package test_package;
 
 public class randomStringSchleife
 {
-	public void main(String[] args)
+	public static String testthread() throws InterruptedException
 	{
 		das_affenprojekt_experimentieren affe = new das_affenprojekt_experimentieren();
-		System.out.println(affe);
+		
+		while(true)
+		{
+			Thread.sleep(10);
+			affe.RandomTextausgabe();
+		}
 	}
 }

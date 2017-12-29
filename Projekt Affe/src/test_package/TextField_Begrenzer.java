@@ -3,15 +3,22 @@ package test_package;
 import javafx.scene.control.TextField;
 
 public class TextField_Begrenzer extends TextField
-{
+{	
+	@Override
 	public void replaceText(int start, int end, String text)
 	{
-		if(text.matches("[a-z]"))
+		if(text.matches("[a-z]") && getText().length() <= 10 || text == "")
 		{
-			if(text.length() <= 10)
-			{
-				super.replaceText(start, end, text);
-			}
+			super.replaceText(start, end, text);
+		}
+	}
+	
+	@Override
+	public void replaceSelection(String text)
+	{
+		if(text.matches("[a-z]") && getText().length() <= 10 || text == "")
+		{
+			super.replaceSelection(text);
 		}
 	}
 }
