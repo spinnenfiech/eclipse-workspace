@@ -46,7 +46,7 @@ public class hud extends Application
 		windowVBox.getChildren().add(label);
 		windowVBox.getChildren().add(timeLabel);
 		
-		startButton.setOnAction(new EventHandler<ActionEvent>();
+		startButton.setOnAction(new EventHandler<ActionEvent>()
 		{
 			@Override
 			public void handle(ActionEvent e)
