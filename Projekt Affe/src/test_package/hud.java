@@ -1,15 +1,14 @@
 package test_package;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
+import javafx.event.ActionEvent;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -35,7 +34,6 @@ public class hud extends Application
 		firstStage.show();
 		startButton.setText("Start");
 		restartButton.setText("Nochmal");
-		winLabel.setText("ERFOLG");
 		percentageLabel.setText("*percentageLabel*");
 		timeLabel.setText("*timeLabel*");
 		windowVBox.getChildren().add(startButton);
@@ -46,12 +44,42 @@ public class hud extends Application
 		windowVBox.getChildren().add(label);
 		windowVBox.getChildren().add(timeLabel);
 		
+		inputField.textProperty().addListener(new ChangeListener<String>()
+		{
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue)
+			{
+				if(inputField.getText().equals(label))
+				{
+					winLabel.setText("ERFOLG");
+				}
+				else
+				{
+					winLabel.setText("warte auf ergebnis");
+				}
+			}
+		});
+		
 		startButton.setOnAction(new EventHandler<ActionEvent>()
 		{
 			@Override
 			public void handle(ActionEvent e)
 			{
-				label.setText(label.RandomTextausgabe());
+				try
+				{
+					//int i = 0;
+					while(!winLabel.getText().equals("ERFOLG"))
+					{
+						Thread.sleep(10);
+						label.setText(label.RandomTextausgabe());
+						//i++;
+					}
+					Thread.sleep(10);
+				}
+				catch (InterruptedException e1)
+				{
+					e1.printStackTrace();
+				}
 			}
 		});
 	}
