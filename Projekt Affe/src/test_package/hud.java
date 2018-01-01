@@ -12,8 +12,9 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class hud extends Application
+public class hud extends Application //Meine Hauptausführung mit der Main
 {
+	@SuppressWarnings("unlikely-arg-type")
 	@Override
 	public void start(Stage firstStage) throws InterruptedException
 	{
@@ -21,11 +22,11 @@ public class hud extends Application
 		Scene firstScene = new Scene(windowVBox, 500, 250);
 		Button startButton = new Button();
 		Button restartButton = new Button();
-		TextField_Begrenzer inputField = new TextField_Begrenzer();
+		TextField_Begrenzer inputField = new TextField_Begrenzer(); //Limitiert auf nur max. 10 Anschläge und nur a-z
 		Label winLabel = new Label();
-		Label percentageLabel = new Label();
-		Label timeLabel = new Label();
-		das_affenprojekt_experimentieren label = new das_affenprojekt_experimentieren();
+		Label percentageLabel = new Label(); //Eine Prozentanzeige, wie viel des gesuchten Wortes schon mal übereinstimmten. Bei 100% hat man quasi gewonnen (in progress)
+		Label timeLabel = new Label(); //Eine Zeitanzeige, welche beim Start drücken anfängt und bei 100% aufhört
+		das_affenprojekt_experimentieren label = new das_affenprojekt_experimentieren(); //Mein Affe, welcher mir wahllose Buchstaben in dieses Label füllt
 		
 		windowVBox.setSpacing(8);
 		windowVBox.setPadding(new Insets(10));
@@ -44,30 +45,35 @@ public class hud extends Application
 		windowVBox.getChildren().add(label);
 		windowVBox.getChildren().add(timeLabel);
 		
-		inputField.textProperty().addListener(new ChangeListener<String>()
+		if(!inputField.getText().equals(label)) //Eine Anzeige, dass das TextField leer ist
+		{
+			winLabel.setText("warte auf Eingabe");
+		}
+		
+		inputField.textProperty().addListener(new ChangeListener<String>() //Meine Überprüfung, ob das gesuchte Wort schon im label gefunden worden ist. Funktioniert, wurde aber noch nicht mit dem label ausprobiert
 		{
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue)
 			{
-				if(inputField.getText().equals(label))
+				if(inputField.getText().equals(label)) //Die Ausgabe, ob das eingegebene Wort gefunden wurde
 				{
 					winLabel.setText("ERFOLG");
 				}
 				else
 				{
-					winLabel.setText("warte auf ergebnis");
+					winLabel.setText("warte auf Ergebnis"); //Quasi wie die if-Abfrage oben, nur dass dies erst kommt, wenn in das TextField getippt wurde
 				}
 			}
 		});
 		
-		startButton.setOnAction(new EventHandler<ActionEvent>()
+		startButton.setOnAction(new EventHandler<ActionEvent>() //Die Aktion, was passiert, wenn ich Start drücke. Hier ist das Problem, dass ich das Label nicht die ganze Zeit neu beschreiben kann. Hier hängt sich trotz Thread.sleep das Fenster auf und es bringt keine Rückmeldung
 		{
 			@Override
 			public void handle(ActionEvent e)
 			{
 				try
 				{
-					//int i = 0;
+					//int i = 0; //Den Integer hab ich hier, weil ich das ganze auch mit Hochzählen probiert habe. Programm hängt sich dort genauso auf, allerdings nur, solange i noch nicht den benötigten Wert hat. Das label wird trotzdem nicht beschrieben
 					while(!winLabel.getText().equals("ERFOLG"))
 					{
 						Thread.sleep(10);

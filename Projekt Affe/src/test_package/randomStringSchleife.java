@@ -1,6 +1,6 @@
 package test_package;
 
-public class randomStringSchleife
+public class randomStringSchleife //Nur experimentiert. Sonst unwichtig
 {
 	public static String testthread() throws InterruptedException
 	{
