@@ -14,7 +14,7 @@ public class das_affenprojekt_experimentieren extends Label
 		
 		Random r2 = new Random(); //Der Zufalls-Affe
 		
-		for(int i = 0; i < 30; i++) //Die Schleife, um das Array mit zufälligen Charakteren zu füllen
+		for(int i = 0; i < 4; i++) //Die Schleife, um das Array mit zufälligen Charakteren zu füllen
 		{
 			text = text + zahl[r2.nextInt(zahl.length)];
 		}

@@ -9,12 +9,12 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Labeled;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class hud extends Application //Meine Hauptausführung mit der Main
 {
-	@SuppressWarnings("unlikely-arg-type")
 	@Override
 	public void start(Stage firstStage) throws InterruptedException
 	{
@@ -45,17 +45,17 @@ public class hud extends Application //Meine Hauptausführung mit der Main
 		windowVBox.getChildren().add(label);
 		windowVBox.getChildren().add(timeLabel);
 		
-		if(!inputField.getText().equals(label)) //Eine Anzeige, dass das TextField leer ist
+		if(!inputField.getText().equals(label.getText())) //Eine Anzeige, dass das TextField leer ist
 		{
 			winLabel.setText("warte auf Eingabe");
 		}
 		
-		inputField.textProperty().addListener(new ChangeListener<String>() //Meine Überprüfung, ob das gesuchte Wort schon im label gefunden worden ist. Funktioniert, wurde aber noch nicht mit dem label ausprobiert
+		label.textProperty().addListener(new ChangeListener<String>() //Meine Überprüfung, ob das gesuchte Wort schon im label gefunden worden ist. Funktioniert, wurde aber noch nicht mit dem label ausprobiert
 		{
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue)
 			{
-				if(inputField.getText().equals(label)) //Die Ausgabe, ob das eingegebene Wort gefunden wurde
+				if(inputField.getText().equals(label.getText())) //Die Ausgabe, ob das eingegebene Wort gefunden wurde
 				{
 					winLabel.setText("ERFOLG");
 				}
@@ -76,11 +76,12 @@ public class hud extends Application //Meine Hauptausführung mit der Main
 					//int i = 0; //Den Integer hab ich hier, weil ich das ganze auch mit Hochzählen probiert habe. Programm hängt sich dort genauso auf, allerdings nur, solange i noch nicht den benötigten Wert hat. Das label wird trotzdem nicht beschrieben
 					while(!winLabel.getText().equals("ERFOLG"))
 					{
-						Thread.sleep(10);
+						Thread.sleep(1);
+						System.out.println(" Looking for: " +inputField.getText()+ " Having: " +label.getText());
 						label.setText(label.RandomTextausgabe());
 						//i++;
 					}
-					Thread.sleep(10);
+					Thread.sleep(1);
 				}
 				catch (InterruptedException e1)
 				{
