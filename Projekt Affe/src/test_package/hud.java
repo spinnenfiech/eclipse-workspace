@@ -26,7 +26,7 @@ public class hud extends Application //Meine Hauptausführung mit der Main
 		Label winLabel = new Label();
 		Label percentageLabel = new Label(); //Eine Prozentanzeige, wie viel des gesuchten Wortes schon mal übereinstimmten. Bei 100% hat man quasi gewonnen (in progress)
 		Label timeLabel = new Label(); //Eine Zeitanzeige, welche beim Start drücken anfängt und bei 100% aufhört
-		das_affenprojekt_experimentieren label = new das_affenprojekt_experimentieren(); //Mein Affe, welcher mir wahllose Buchstaben in dieses Label füllt
+		Label label = new Label(); //Mein Affe, welcher mir wahllose Buchstaben in dieses Label füllt
 		
 		windowVBox.setSpacing(8);
 		windowVBox.setPadding(new Insets(10));
@@ -78,7 +78,7 @@ public class hud extends Application //Meine Hauptausführung mit der Main
 					{
 						Thread.sleep(1);
 						System.out.println(" Looking for: " +inputField.getText()+ " Having: " +label.getText());
-						label.setText(label.RandomTextausgabe());
+						label.setText(das_affenprojekt_experimentieren.RandomTextausgabe());
 						//i++;
 					}
 					Thread.sleep(1);

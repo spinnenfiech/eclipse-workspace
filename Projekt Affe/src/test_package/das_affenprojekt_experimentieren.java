@@ -4,9 +4,9 @@ import java.util.Random;
 
 import javafx.scene.control.Label;
 
-public class das_affenprojekt_experimentieren extends Label
+public class das_affenprojekt_experimentieren //extends Label
 {
-	public String RandomTextausgabe() throws InterruptedException //Die Methode, das zufällige CharArray zu bauen
+	public static String RandomTextausgabe() throws InterruptedException //Die Methode, das zufällige CharArray zu bauen
 	{
 		char[] zahl = "abcdefghijklmnopqrstuvwxyz".toCharArray(); //Das Alphabet als Pool für das Array
 		
@@ -14,7 +14,7 @@ public class das_affenprojekt_experimentieren extends Label
 		
 		Random r2 = new Random(); //Der Zufalls-Affe
 		
-		for(int i = 0; i < 4; i++) //Die Schleife, um das Array mit zufälligen Charakteren zu füllen
+		for(int i = 0; i < 10; i++) //Die Schleife, um das Array mit zufälligen Charakteren zu füllen
 		{
 			text = text + zahl[r2.nextInt(zahl.length)];
 		}
