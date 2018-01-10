@@ -1,6 +1,10 @@
 package test_package;
 
 import javafx.event.ActionEvent;
+
+import com.sun.javafx.scene.paint.GradientUtils.Point;
+import com.sun.xml.internal.ws.wsdl.writer.document.Port;
+
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -15,14 +19,17 @@ import javafx.stage.Stage;
 
 public class hud extends Application //Meine Hauptausführung mit der Main
 {
+	public int meineZahl;
+	
 	@Override
 	public void start(Stage firstStage) throws InterruptedException
-	{
+	{		
 		VBox windowVBox = new VBox();
 		Scene firstScene = new Scene(windowVBox, 500, 250);
 		Button startButton = new Button();
 		Button restartButton = new Button();
 		TextField_Begrenzer inputField = new TextField_Begrenzer(); //Limitiert auf nur max. 10 Anschläge und nur a-z
+		inputField.textProperty().addListener((to, from, o) -> this.meineZahl = inputField.getText().length());
 		Label winLabel = new Label();
 		Label percentageLabel = new Label(); //Eine Prozentanzeige, wie viel des gesuchten Wortes schon mal übereinstimmten. Bei 100% hat man quasi gewonnen (in progress)
 		Label timeLabel = new Label(); //Eine Zeitanzeige, welche beim Start drücken anfängt und bei 100% aufhört
@@ -77,7 +84,7 @@ public class hud extends Application //Meine Hauptausführung mit der Main
 					while(!winLabel.getText().equals("ERFOLG"))
 					{
 						Thread.sleep(1);
-						System.out.println(" Looking for: " +inputField.getText()+ " Having: " +label.getText());
+						System.out.println("Looking for: " +inputField.getText()+ " | Having: " +label.getText());
 						label.setText(das_affenprojekt_experimentieren.RandomTextausgabe());
 						//i++;
 					}
@@ -89,6 +96,18 @@ public class hud extends Application //Meine Hauptausführung mit der Main
 				}
 			}
 		});
+	}
+	
+	//public int meineZahl;
+	
+	public void setMeineZahl(int neueZahl)
+	{
+		this.meineZahl = neueZahl;
+	}
+
+	public int getMeineZahl()
+	{
+		return this.meineZahl;
 	}
 	
 	public static void main(String[] args)
