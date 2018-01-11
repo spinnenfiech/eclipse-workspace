@@ -78,22 +78,27 @@ public class hud extends Application //Meine Hauptausführung mit der Main
 			@Override
 			public void handle(ActionEvent e)
 			{
-				try
+				Thread t = new Thread()
 				{
-					//int i = 0; //Den Integer hab ich hier, weil ich das ganze auch mit Hochzählen probiert habe. Programm hängt sich dort genauso auf, allerdings nur, solange i noch nicht den benötigten Wert hat. Das label wird trotzdem nicht beschrieben
-					while(!winLabel.getText().equals("ERFOLG"))
+					public void run()
 					{
-						Thread.sleep(1);
-						System.out.println("Looking for: " +inputField.getText()+ " | Having: " +label.getText());
-						label.setText(das_affenprojekt_experimentieren.RandomTextausgabe());
-						//i++;
+						//int i = 0; //Den Integer hab ich hier, weil ich das ganze auch mit Hochzählen probiert habe. Programm hängt sich dort genauso auf, allerdings nur, solange i noch nicht den benötigten Wert hat. Das label wird trotzdem nicht beschrieben
+						while(!winLabel.getText().equals("ERFOLG"))
+						{
+							System.out.println("Looking for: " +inputField.getText()+ " | Having: " +label.getText());
+							try
+							{
+								label.setText(das_affenprojekt_experimentieren.RandomTextausgabe());
+							}
+							catch (InterruptedException e)
+							{
+								e.printStackTrace();
+							}
+							//i++;
+						}
 					}
-					Thread.sleep(1);
-				}
-				catch (InterruptedException e1)
-				{
-					e1.printStackTrace();
-				}
+				};
+				t.start();
 			}
 		});
 	}
