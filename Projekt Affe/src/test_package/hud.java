@@ -19,7 +19,7 @@ import javafx.stage.Stage;
 
 public class hud extends Application //Meine Hauptausführung mit der Main
 {
-	public int meineZahl;
+	public int meineZahl = 4;
 	
 	@Override
 	public void start(Stage firstStage) throws InterruptedException
@@ -29,11 +29,12 @@ public class hud extends Application //Meine Hauptausführung mit der Main
 		Button startButton = new Button();
 		Button restartButton = new Button();
 		TextField_Begrenzer inputField = new TextField_Begrenzer(); //Limitiert auf nur max. 10 Anschläge und nur a-z
-		inputField.textProperty().addListener((to, from, o) -> this.meineZahl = inputField.getText().length());
+		//inputField.textProperty().addListener((to, from, o) -> 
+		//this.meineZahl = inputField.getText().length();
 		Label winLabel = new Label();
 		Label percentageLabel = new Label(); //Eine Prozentanzeige, wie viel des gesuchten Wortes schon mal übereinstimmten. Bei 100% hat man quasi gewonnen (in progress)
 		Label timeLabel = new Label(); //Eine Zeitanzeige, welche beim Start drücken anfängt und bei 100% aufhört
-		Label label = new Label(); //Mein Affe, welcher mir wahllose Buchstaben in dieses Label füllt
+		das_affenprojekt_experimentieren label = new das_affenprojekt_experimentieren(); //Mein Affe, welcher mir wahllose Buchstaben in dieses Label füllt
 		
 		windowVBox.setSpacing(8);
 		windowVBox.setPadding(new Insets(10));
@@ -82,10 +83,8 @@ public class hud extends Application //Meine Hauptausführung mit der Main
 				{
 					public void run()
 					{
-						//int i = 0; //Den Integer hab ich hier, weil ich das ganze auch mit Hochzählen probiert habe. Programm hängt sich dort genauso auf, allerdings nur, solange i noch nicht den benötigten Wert hat. Das label wird trotzdem nicht beschrieben
 						while(!winLabel.getText().equals("ERFOLG"))
 						{
-							System.out.println("Looking for: " +inputField.getText()+ " | Having: " +label.getText());
 							try
 							{
 								label.setText(das_affenprojekt_experimentieren.RandomTextausgabe());
@@ -94,7 +93,6 @@ public class hud extends Application //Meine Hauptausführung mit der Main
 							{
 								e.printStackTrace();
 							}
-							//i++;
 						}
 					}
 				};
@@ -102,8 +100,6 @@ public class hud extends Application //Meine Hauptausführung mit der Main
 			}
 		});
 	}
-	
-	//public int meineZahl;
 	
 	public void setMeineZahl(int neueZahl)
 	{
