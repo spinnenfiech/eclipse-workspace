@@ -23,7 +23,9 @@ public class hud extends Application //Meine Hauptausführung mit der Main
 	
 	@Override
 	public void start(Stage firstStage) throws InterruptedException
-	{		
+	{	
+		das_affenprojekt_experimentieren affe = new das_affenprojekt_experimentieren();
+		
 		VBox windowVBox = new VBox();
 		Scene firstScene = new Scene(windowVBox, 500, 250);
 		Button startButton = new Button();
@@ -34,7 +36,7 @@ public class hud extends Application //Meine Hauptausführung mit der Main
 		Label winLabel = new Label();
 		Label percentageLabel = new Label(); //Eine Prozentanzeige, wie viel des gesuchten Wortes schon mal übereinstimmten. Bei 100% hat man quasi gewonnen (in progress)
 		Label timeLabel = new Label(); //Eine Zeitanzeige, welche beim Start drücken anfängt und bei 100% aufhört
-		das_affenprojekt_experimentieren label = new das_affenprojekt_experimentieren(); //Mein Affe, welcher mir wahllose Buchstaben in dieses Label füllt
+		Label label = new Label(); //Mein Affe, welcher mir wahllose Buchstaben in dieses Label füllt
 		
 		windowVBox.setSpacing(8);
 		windowVBox.setPadding(new Insets(10));
@@ -75,28 +77,27 @@ public class hud extends Application //Meine Hauptausführung mit der Main
 		});
 		
 		startButton.setOnAction(new EventHandler<ActionEvent>() //Die Aktion, was passiert, wenn ich Start drücke. Hier ist das Problem, dass ich das Label nicht die ganze Zeit neu beschreiben kann. Hier hängt sich trotz Thread.sleep das Fenster auf und es bringt keine Rückmeldung
-		{
+		{				
 			@Override
 			public void handle(ActionEvent e)
-			{
+			{					
 				Thread t = new Thread()
 				{
 					public void run()
 					{
-						while(!winLabel.getText().equals("ERFOLG"))
+						while(!inputField.getText().equals(label.getText()))
 						{
-							try
-							{
-								label.setText(das_affenprojekt_experimentieren.RandomTextausgabe());
-							}
-							catch (InterruptedException e)
-							{
+							System.out.println("Having: " + label.getText() + " | Looking for: " + inputField.getText());
+							try {
+								label.setText(affe.RandomTextausgabe());
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
 						}
 					}
 				};
-				t.start();
+				t.start();			
 			}
 		});
 	}

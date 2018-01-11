@@ -4,9 +4,9 @@ import java.util.Random;
 
 import javafx.scene.control.Label;
 
-public class das_affenprojekt_experimentieren extends Label
+public class das_affenprojekt_experimentieren //extends Label
 {
-	public static String RandomTextausgabe() throws InterruptedException //Die Methode, das zufällige CharArray zu bauen
+	public String RandomTextausgabe() throws InterruptedException //Die Methode, das zufällige CharArray zu bauen
 	{
 		hud inputFieldLänge = new hud();
 		
