@@ -16,4 +16,5 @@
 <fullyQualifiedTypeName name="java.util.logging.Level"/>
 <fullyQualifiedTypeName name="gdi.game.overlay.Button"/>
 <fullyQualifiedTypeName name="java.lang.ThreadDeath"/>
+<fullyQualifiedTypeName name="java.lang.Thread"/>
 </qualifiedTypeNameHistroy>

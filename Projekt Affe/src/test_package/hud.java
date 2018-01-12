@@ -19,7 +19,12 @@ import javafx.stage.Stage;
 
 public class hud extends Application //Meine Hauptausführung mit der Main
 {
-	public int meineZahl = 4;
+	public int meineZahl;
+
+	public int getMeineZahl()
+	{
+		return this.meineZahl;
+	}
 	
 	@Override
 	public void start(Stage firstStage) throws InterruptedException
@@ -32,7 +37,7 @@ public class hud extends Application //Meine Hauptausführung mit der Main
 		Button restartButton = new Button();
 		TextField_Begrenzer inputField = new TextField_Begrenzer(); //Limitiert auf nur max. 10 Anschläge und nur a-z
 		//inputField.textProperty().addListener((to, from, o) -> 
-		//this.meineZahl = inputField.getText().length();
+		this.meineZahl = inputField.getLength();
 		Label winLabel = new Label();
 		Label percentageLabel = new Label(); //Eine Prozentanzeige, wie viel des gesuchten Wortes schon mal übereinstimmten. Bei 100% hat man quasi gewonnen (in progress)
 		Label timeLabel = new Label(); //Eine Zeitanzeige, welche beim Start drücken anfängt und bei 100% aufhört
@@ -47,17 +52,23 @@ public class hud extends Application //Meine Hauptausführung mit der Main
 		restartButton.setText("Nochmal");
 		percentageLabel.setText("*percentageLabel*");
 		timeLabel.setText("*timeLabel*");
+		winLabel.setText("jkldfsa");
 		windowVBox.getChildren().add(startButton);
 		windowVBox.getChildren().add(restartButton);
 		windowVBox.getChildren().add(inputField);
 		windowVBox.getChildren().add(winLabel);
 		windowVBox.getChildren().add(percentageLabel);
-		windowVBox.getChildren().add(label);
 		windowVBox.getChildren().add(timeLabel);
+		windowVBox.getChildren().add(label);
 		
-		if(!inputField.getText().equals(label.getText())) //Eine Anzeige, dass das TextField leer ist
+		if(inputField.getText().isEmpty()) //Eine Anzeige, dass das TextField leer ist
 		{
 			winLabel.setText("warte auf Eingabe");
+		}
+		
+		if(!inputField.getText().isEmpty())
+		{
+			winLabel.setText("warte auf Ergebnis");
 		}
 		
 		label.textProperty().addListener(new ChangeListener<String>() //Meine Überprüfung, ob das gesuchte Wort schon im label gefunden worden ist. Funktioniert, wurde aber noch nicht mit dem label ausprobiert
@@ -69,15 +80,11 @@ public class hud extends Application //Meine Hauptausführung mit der Main
 				{
 					winLabel.setText("ERFOLG");
 				}
-				else
-				{
-					winLabel.setText("warte auf Ergebnis"); //Quasi wie die if-Abfrage oben, nur dass dies erst kommt, wenn in das TextField getippt wurde
-				}
 			}
 		});
 		
 		startButton.setOnAction(new EventHandler<ActionEvent>() //Die Aktion, was passiert, wenn ich Start drücke. Hier ist das Problem, dass ich das Label nicht die ganze Zeit neu beschreiben kann. Hier hängt sich trotz Thread.sleep das Fenster auf und es bringt keine Rückmeldung
-		{				
+		{		
 			@Override
 			public void handle(ActionEvent e)
 			{					
@@ -87,11 +94,26 @@ public class hud extends Application //Meine Hauptausführung mit der Main
 					{
 						while(!inputField.getText().equals(label.getText()))
 						{
-							System.out.println("Having: " + label.getText() + " | Looking for: " + inputField.getText());
-							try {
+							try
+							{
+								Thread.sleep(250);
+							}
+							catch (InterruptedException e1)
+							{
+								e1.printStackTrace();
+							}
+							System.out.println("Having: " + label.getText() + 
+									" | Looking for: " + inputField.getText() + 
+									" | inputField length: " + inputField.getLength() + 
+									" | meineZahl length: " + meineZahl + 
+									" | getMeineZahl length: " + getMeineZahl());
+							
+							try
+							{
 								label.setText(affe.RandomTextausgabe());
-							} catch (InterruptedException e) {
-								// TODO Auto-generated catch block
+							}
+							catch (InterruptedException e)
+							{
 								e.printStackTrace();
 							}
 						}
@@ -100,16 +122,6 @@ public class hud extends Application //Meine Hauptausführung mit der Main
 				t.start();			
 			}
 		});
-	}
-	
-	public void setMeineZahl(int neueZahl)
-	{
-		this.meineZahl = neueZahl;
-	}
-
-	public int getMeineZahl()
-	{
-		return this.meineZahl;
 	}
 	
 	public static void main(String[] args)
