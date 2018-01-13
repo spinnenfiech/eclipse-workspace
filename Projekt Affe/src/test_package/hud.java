@@ -20,6 +20,11 @@ import javafx.stage.Stage;
 public class hud extends Application //Meine Hauptausführung mit der Main
 {
 	public int meineZahl;
+	
+	public void setMeineZahl(int neueZahl)
+	{
+		this.meineZahl = neueZahl;
+	}
 
 	public int getMeineZahl()
 	{
@@ -29,7 +34,8 @@ public class hud extends Application //Meine Hauptausführung mit der Main
 	@Override
 	public void start(Stage firstStage) throws InterruptedException
 	{	
-		das_affenprojekt_experimentieren affe = new das_affenprojekt_experimentieren();
+		System.out.println("jetzt wird 'affe' gestartet");
+		//das_affenprojekt_experimentieren affe = new das_affenprojekt_experimentieren();
 		
 		VBox windowVBox = new VBox();
 		Scene firstScene = new Scene(windowVBox, 500, 250);
@@ -37,7 +43,6 @@ public class hud extends Application //Meine Hauptausführung mit der Main
 		Button restartButton = new Button();
 		TextField_Begrenzer inputField = new TextField_Begrenzer(); //Limitiert auf nur max. 10 Anschläge und nur a-z
 		//inputField.textProperty().addListener((to, from, o) -> 
-		this.meineZahl = inputField.getLength();
 		Label winLabel = new Label();
 		Label percentageLabel = new Label(); //Eine Prozentanzeige, wie viel des gesuchten Wortes schon mal übereinstimmten. Bei 100% hat man quasi gewonnen (in progress)
 		Label timeLabel = new Label(); //Eine Zeitanzeige, welche beim Start drücken anfängt und bei 100% aufhört
@@ -110,7 +115,7 @@ public class hud extends Application //Meine Hauptausführung mit der Main
 							
 							try
 							{
-								label.setText(affe.RandomTextausgabe());
+								label.setText(das_affenprojekt_experimentieren.RandomTextausgabe());
 							}
 							catch (InterruptedException e)
 							{
@@ -119,9 +124,21 @@ public class hud extends Application //Meine Hauptausführung mit der Main
 						}
 					}
 				};
-				t.start();			
+				t.start();
 			}
 		});
+		
+		Thread f = new Thread()
+		{
+			public void run()
+			{
+				while(!inputField.getText().equals(label))
+				{
+					meineZahl = inputField.getLength();
+				}
+			}
+		};
+		f.start();
 	}
 	
 	public static void main(String[] args)
