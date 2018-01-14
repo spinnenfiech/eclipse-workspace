@@ -17,4 +17,7 @@
 <fullyQualifiedTypeName name="gdi.game.overlay.Button"/>
 <fullyQualifiedTypeName name="java.lang.ThreadDeath"/>
 <fullyQualifiedTypeName name="java.lang.Thread"/>
+<fullyQualifiedTypeName name="javafx.scene.control.ProgressBar"/>
+<fullyQualifiedTypeName name="javafx.scene.control.ProgressIndicator"/>
+<fullyQualifiedTypeName name="javafx.application.Platform"/>
 </qualifiedTypeNameHistroy>

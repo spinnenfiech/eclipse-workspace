@@ -6,6 +6,7 @@ import com.sun.javafx.scene.paint.GradientUtils.Point;
 import com.sun.xml.internal.ws.wsdl.writer.document.Port;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
@@ -14,21 +15,25 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Labeled;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class hud extends Application //Meine Hauptausführung mit der Main
 {
-	public int meineZahl;
+	static int meineZahl;
+	
+	public int i = 0;
 	
 	public void setMeineZahl(int neueZahl)
 	{
-		this.meineZahl = neueZahl;
+		hud.meineZahl = neueZahl;
 	}
 
-	public int getMeineZahl()
+	static int getMeineZahl()
 	{
-		return this.meineZahl;
+		return meineZahl;
 	}
 	
 	@Override
@@ -47,6 +52,8 @@ public class hud extends Application //Meine Hauptausführung mit der Main
 		Label percentageLabel = new Label(); //Eine Prozentanzeige, wie viel des gesuchten Wortes schon mal übereinstimmten. Bei 100% hat man quasi gewonnen (in progress)
 		Label timeLabel = new Label(); //Eine Zeitanzeige, welche beim Start drücken anfängt und bei 100% aufhört
 		Label label = new Label(); //Mein Affe, welcher mir wahllose Buchstaben in dieses Label füllt
+		ProgressIndicator pi = new ProgressIndicator();
+		ProgressBar	pb = new ProgressBar(0.0);
 		
 		windowVBox.setSpacing(8);
 		windowVBox.setPadding(new Insets(10));
@@ -57,7 +64,6 @@ public class hud extends Application //Meine Hauptausführung mit der Main
 		restartButton.setText("Nochmal");
 		percentageLabel.setText("*percentageLabel*");
 		timeLabel.setText("*timeLabel*");
-		winLabel.setText("jkldfsa");
 		windowVBox.getChildren().add(startButton);
 		windowVBox.getChildren().add(restartButton);
 		windowVBox.getChildren().add(inputField);
@@ -65,15 +71,11 @@ public class hud extends Application //Meine Hauptausführung mit der Main
 		windowVBox.getChildren().add(percentageLabel);
 		windowVBox.getChildren().add(timeLabel);
 		windowVBox.getChildren().add(label);
+		windowVBox.getChildren().add(pb);
 		
 		if(inputField.getText().isEmpty()) //Eine Anzeige, dass das TextField leer ist
 		{
-			winLabel.setText("warte auf Eingabe");
-		}
-		
-		if(!inputField.getText().isEmpty())
-		{
-			winLabel.setText("warte auf Ergebnis");
+			winLabel.setText("warte auf Start");
 		}
 		
 		label.textProperty().addListener(new ChangeListener<String>() //Meine Überprüfung, ob das gesuchte Wort schon im label gefunden worden ist. Funktioniert, wurde aber noch nicht mit dem label ausprobiert
@@ -83,25 +85,31 @@ public class hud extends Application //Meine Hauptausführung mit der Main
 			{
 				if(inputField.getText().equals(label.getText())) //Die Ausgabe, ob das eingegebene Wort gefunden wurde
 				{
-					winLabel.setText("ERFOLG");
+					timeLabel.setText("ERFOLG");
+					System.out.println("ERFOLG");
+					Platform.runLater(() -> pb.setProgress(1));
 				}
 			}
 		});
 		
-		startButton.setOnAction(new EventHandler<ActionEvent>() //Die Aktion, was passiert, wenn ich Start drücke. Hier ist das Problem, dass ich das Label nicht die ganze Zeit neu beschreiben kann. Hier hängt sich trotz Thread.sleep das Fenster auf und es bringt keine Rückmeldung
+		startButton.setOnAction(new EventHandler<ActionEvent>()
 		{		
 			@Override
 			public void handle(ActionEvent e)
-			{					
+			{
+				pb.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
+				
+				inputField.setEditable(false);
+				
 				Thread t = new Thread()
 				{
 					public void run()
 					{
-						while(!inputField.getText().equals(label.getText()))
-						{
+						while(!timeLabel.getText().equals("ERFOLG"))
+						{							
 							try
 							{
-								Thread.sleep(250);
+								Thread.sleep(0);
 							}
 							catch (InterruptedException e1)
 							{
@@ -113,32 +121,15 @@ public class hud extends Application //Meine Hauptausführung mit der Main
 									" | meineZahl length: " + meineZahl + 
 									" | getMeineZahl length: " + getMeineZahl());
 							
-							try
-							{
-								label.setText(das_affenprojekt_experimentieren.RandomTextausgabe());
-							}
-							catch (InterruptedException e)
-							{
-								e.printStackTrace();
-							}
+							label.setText(das_affenprojekt_experimentieren.RandomTextausgabe());
+							
+							meineZahl = inputField.getLength();
 						}
 					}
 				};
 				t.start();
 			}
 		});
-		
-		Thread f = new Thread()
-		{
-			public void run()
-			{
-				while(!inputField.getText().equals(label))
-				{
-					meineZahl = inputField.getLength();
-				}
-			}
-		};
-		f.start();
 	}
 	
 	public static void main(String[] args)
