@@ -24,7 +24,10 @@ public class hud extends Application //Meine Hauptausführung mit der Main
 {
 	static int meineZahl;
 	
-	public int i = 0;
+	public int speed = 10;
+	
+	boolean run = true;
+	boolean stop = false;
 	
 	public void setMeineZahl(int neueZahl)
 	{
@@ -43,16 +46,18 @@ public class hud extends Application //Meine Hauptausführung mit der Main
 		//das_affenprojekt_experimentieren affe = new das_affenprojekt_experimentieren();
 		
 		VBox windowVBox = new VBox();
-		Scene firstScene = new Scene(windowVBox, 500, 250);
+		Scene firstScene = new Scene(windowVBox, 700, 400);
 		Button startButton = new Button();
 		Button restartButton = new Button();
+		Button stopButton = new Button();
 		TextField_Begrenzer inputField = new TextField_Begrenzer(); //Limitiert auf nur max. 10 Anschläge und nur a-z
 		//inputField.textProperty().addListener((to, from, o) -> 
 		Label winLabel = new Label();
 		Label percentageLabel = new Label(); //Eine Prozentanzeige, wie viel des gesuchten Wortes schon mal übereinstimmten. Bei 100% hat man quasi gewonnen (in progress)
 		Label timeLabel = new Label(); //Eine Zeitanzeige, welche beim Start drücken anfängt und bei 100% aufhört
 		Label label = new Label(); //Mein Affe, welcher mir wahllose Buchstaben in dieses Label füllt
-		ProgressIndicator pi = new ProgressIndicator();
+		Label stopLabel = new Label();
+		ProgressIndicator pi = new ProgressIndicator(0.5);
 		ProgressBar	pb = new ProgressBar(0.0);
 		
 		windowVBox.setSpacing(8);
@@ -62,21 +67,20 @@ public class hud extends Application //Meine Hauptausführung mit der Main
 		firstStage.show();
 		startButton.setText("Start");
 		restartButton.setText("Nochmal");
+		stopButton.setText("Stop");
 		percentageLabel.setText("*percentageLabel*");
 		timeLabel.setText("*timeLabel*");
 		windowVBox.getChildren().add(startButton);
 		windowVBox.getChildren().add(restartButton);
+		windowVBox.getChildren().add(stopButton);
 		windowVBox.getChildren().add(inputField);
 		windowVBox.getChildren().add(winLabel);
 		windowVBox.getChildren().add(percentageLabel);
 		windowVBox.getChildren().add(timeLabel);
 		windowVBox.getChildren().add(label);
+		windowVBox.getChildren().add(stopLabel);
 		windowVBox.getChildren().add(pb);
-		
-		if(inputField.getText().isEmpty()) //Eine Anzeige, dass das TextField leer ist
-		{
-			winLabel.setText("warte auf Start");
-		}
+		windowVBox.getChildren().add(pi);
 		
 		label.textProperty().addListener(new ChangeListener<String>() //Meine Überprüfung, ob das gesuchte Wort schon im label gefunden worden ist. Funktioniert, wurde aber noch nicht mit dem label ausprobiert
 		{
@@ -85,49 +89,102 @@ public class hud extends Application //Meine Hauptausführung mit der Main
 			{
 				if(inputField.getText().equals(label.getText())) //Die Ausgabe, ob das eingegebene Wort gefunden wurde
 				{
-					timeLabel.setText("ERFOLG");
+					winLabel.setText("ERFOLG");
 					System.out.println("ERFOLG");
 					Platform.runLater(() -> pb.setProgress(1));
 				}
 			}
 		});
 		
+		Thread t = new Thread()
+		{
+			public void run()
+			{
+				while(!inputField.getText().equals(label) && run == true)
+				{
+					inputField.setEditable(false);
+					
+					if(winLabel.getText().equals("ERFOLG"))
+					{
+						break;
+					}
+					
+					try
+					{
+						Thread.sleep(speed);
+					}
+					catch (InterruptedException e1)
+					{
+						e1.printStackTrace();
+					}
+					
+					Platform.runLater(() ->
+					{
+						System.out.println("Having: " + label.getText() + 
+								" | Looking for: " + inputField.getText() + 
+								" | inputField length: " + inputField.getLength() + 
+								" | meineZahl length: " + meineZahl + 
+								" | getMeineZahl length: " + getMeineZahl());
+						
+						label.setText(das_affenprojekt_experimentieren.RandomTextausgabe());
+						
+						meineZahl = inputField.getLength();
+						
+						if(winLabel.getText().equals("ERFOLG"))
+						{
+							label.setText(inputField.getText());
+						}
+					});
+				}
+			}
+		};
+		
 		startButton.setOnAction(new EventHandler<ActionEvent>()
-		{		
+		{
+			@Override
+			public void handle(ActionEvent e)
+			{	
+				while(stop == false)
+				{
+					while(run == true)
+					{
+						t.start();
+						break;
+					}
+					pb.setProgress(ProgressBar.INDETERMINATE_PROGRESS);
+				}
+			}
+		});
+		
+		stopButton.setOnAction(new EventHandler<ActionEvent>()
+		{
 			@Override
 			public void handle(ActionEvent e)
 			{
-				pb.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
+				pb.setProgress(0);
+				stopLabel.setText("Angehalten. Bitte 'Nochmal' drücken");
 				
-				inputField.setEditable(false);
+				t.interrupt();
 				
-				Thread t = new Thread()
+				stop = true;
+				run = false;
+			}
+		});
+		
+		restartButton.setOnAction(new EventHandler<ActionEvent>()
+		{
+			@Override
+			public void handle(ActionEvent e)
+			{
+				while(stop == true)
 				{
-					public void run()
-					{
-						while(!timeLabel.getText().equals("ERFOLG"))
-						{							
-							try
-							{
-								Thread.sleep(0);
-							}
-							catch (InterruptedException e1)
-							{
-								e1.printStackTrace();
-							}
-							System.out.println("Having: " + label.getText() + 
-									" | Looking for: " + inputField.getText() + 
-									" | inputField length: " + inputField.getLength() + 
-									" | meineZahl length: " + meineZahl + 
-									" | getMeineZahl length: " + getMeineZahl());
-							
-							label.setText(das_affenprojekt_experimentieren.RandomTextausgabe());
-							
-							meineZahl = inputField.getLength();
-						}
-					}
-				};
-				t.start();
+					label.setText("");
+					stopLabel.setText("");
+					inputField.setEditable(true);
+					
+					run = true;
+					stop = false;
+				}
 			}
 		});
 	}
