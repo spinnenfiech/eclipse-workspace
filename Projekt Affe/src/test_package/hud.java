@@ -26,8 +26,10 @@ public class hud extends Application //Meine Hauptausführung mit der Main
 	
 	public int speed = 10;
 	
-	boolean run = true;
+	boolean restart = false;
+	boolean run = false;
 	boolean stop = false;
+	boolean pseudoThreadKontrolle = false;
 	
 	public void setMeineZahl(int neueZahl)
 	{
@@ -98,46 +100,58 @@ public class hud extends Application //Meine Hauptausführung mit der Main
 		
 		Thread t = new Thread()
 		{
+			@SuppressWarnings("unlikely-arg-type")
 			public void run()
 			{
-				while(!inputField.getText().equals(label) && run == true)
+				System.out.println("Thread rennt");
+				
+				while(pseudoThreadKontrolle == true)
 				{
-					inputField.setEditable(false);
+					System.out.println("Pseudo Kontrolle aktiv");
 					
-					if(winLabel.getText().equals("ERFOLG"))
+					while(run == true)
 					{
-						break;
-					}
-					
-					try
-					{
-						Thread.sleep(speed);
-					}
-					catch (InterruptedException e1)
-					{
-						e1.printStackTrace();
-					}
-					
-					Platform.runLater(() ->
-					{
-						System.out.println("Having: " + label.getText() + 
-								" | Looking for: " + inputField.getText() + 
-								" | inputField length: " + inputField.getLength() + 
-								" | meineZahl length: " + meineZahl + 
-								" | getMeineZahl length: " + getMeineZahl());
-						
-						label.setText(das_affenprojekt_experimentieren.RandomTextausgabe());
-						
-						meineZahl = inputField.getLength();
-						
-						if(winLabel.getText().equals("ERFOLG"))
+						while(!inputField.getText().equals(label))
 						{
-							label.setText(inputField.getText());
+							inputField.setEditable(false);
+						
+							if(winLabel.getText().equals("ERFOLG") || run == false)
+							{
+								break;
+							}
+						
+							try
+							{
+								Thread.sleep(speed);
+							}
+							catch (InterruptedException e1)
+							{
+								e1.printStackTrace();
+							}
+						
+							Platform.runLater(() ->
+							{
+								System.out.println("Having: " + label.getText() + 
+										" | Looking for: " + inputField.getText() + 
+										" | inputField length: " + inputField.getLength() + 
+										" | meineZahl length: " + meineZahl + 
+										" | getMeineZahl length: " + getMeineZahl());
+							
+								label.setText(das_affenprojekt_experimentieren.RandomTextausgabe());
+							
+								meineZahl = inputField.getLength();
+							
+								if(winLabel.getText().equals("ERFOLG"))
+								{
+									label.setText(inputField.getText());
+								}
+							});
 						}
-					});
+					}
 				}
 			}
 		};
+		t.start();
 		
 		startButton.setOnAction(new EventHandler<ActionEvent>()
 		{
@@ -146,9 +160,13 @@ public class hud extends Application //Meine Hauptausführung mit der Main
 			{	
 				while(stop == false)
 				{
-					while(run == true)
+					pseudoThreadKontrolle = true;
+					run = true;
+					
+					if(restart == true)
 					{
-						t.start();
+						System.out.println("Start-if aktiv");
+						run = true;
 						break;
 					}
 					pb.setProgress(ProgressBar.INDETERMINATE_PROGRESS);
@@ -163,9 +181,9 @@ public class hud extends Application //Meine Hauptausführung mit der Main
 			{
 				pb.setProgress(0);
 				stopLabel.setText("Angehalten. Bitte 'Nochmal' drücken");
-				
-				t.interrupt();
-				
+
+				pseudoThreadKontrolle = false;
+				restart = false;
 				stop = true;
 				run = false;
 			}
@@ -182,7 +200,7 @@ public class hud extends Application //Meine Hauptausführung mit der Main
 					stopLabel.setText("");
 					inputField.setEditable(true);
 					
-					run = true;
+					restart = true;
 					stop = false;
 				}
 			}
