@@ -30,7 +30,7 @@ public class hud extends Application //Meine Hauptausführung mit der Main
 	boolean run = false;
 	boolean stop = false;
 	boolean pseudoThreadKontrolle = false;
-	
+
 	public void setMeineZahl(int neueZahl)
 	{
 		hud.meineZahl = neueZahl;
@@ -43,21 +43,18 @@ public class hud extends Application //Meine Hauptausführung mit der Main
 	
 	@Override
 	public void start(Stage firstStage) throws InterruptedException
-	{	
+	{
 		System.out.println("jetzt wird 'affe' gestartet");
-		//das_affenprojekt_experimentieren affe = new das_affenprojekt_experimentieren();
-		
 		VBox windowVBox = new VBox();
 		Scene firstScene = new Scene(windowVBox, 700, 400);
 		Button startButton = new Button();
 		Button restartButton = new Button();
 		Button stopButton = new Button();
-		TextField_Begrenzer inputField = new TextField_Begrenzer(); //Limitiert auf nur max. 10 Anschläge und nur a-z
-		//inputField.textProperty().addListener((to, from, o) -> 
+		TextField_Begrenzer inputField = new TextField_Begrenzer();
 		Label winLabel = new Label();
-		Label percentageLabel = new Label(); //Eine Prozentanzeige, wie viel des gesuchten Wortes schon mal übereinstimmten. Bei 100% hat man quasi gewonnen (in progress)
-		Label timeLabel = new Label(); //Eine Zeitanzeige, welche beim Start drücken anfängt und bei 100% aufhört
-		Label label = new Label(); //Mein Affe, welcher mir wahllose Buchstaben in dieses Label füllt
+		Label percentageLabel = new Label();
+		Label timeLabel = new Label();
+		Label label = new Label();
 		Label stopLabel = new Label();
 		ProgressIndicator pi = new ProgressIndicator(0.5);
 		ProgressBar	pb = new ProgressBar(0.0);
@@ -84,12 +81,12 @@ public class hud extends Application //Meine Hauptausführung mit der Main
 		windowVBox.getChildren().add(pb);
 		windowVBox.getChildren().add(pi);
 		
-		label.textProperty().addListener(new ChangeListener<String>() //Meine Überprüfung, ob das gesuchte Wort schon im label gefunden worden ist. Funktioniert, wurde aber noch nicht mit dem label ausprobiert
+		label.textProperty().addListener(new ChangeListener<String>()
 		{
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue)
 			{
-				if(inputField.getText().equals(label.getText())) //Die Ausgabe, ob das eingegebene Wort gefunden wurde
+				if(inputField.getText().equals(label.getText()))
 				{
 					winLabel.setText("ERFOLG");
 					System.out.println("ERFOLG");
@@ -98,28 +95,47 @@ public class hud extends Application //Meine Hauptausführung mit der Main
 			}
 		});
 		
-		Thread t = new Thread()
+		MyService service = null;
+		
+		Thread t = new Thread(service)
 		{
 			@SuppressWarnings("unlikely-arg-type")
 			public void run()
-			{
-				System.out.println("Thread rennt");
+			{					
+				System.out.println("Pseudo Kontrolle aktiv");
 				
-				while(pseudoThreadKontrolle == true)
+				try
 				{
-					System.out.println("Pseudo Kontrolle aktiv");
+					Thread.sleep(speed);
+				}
+				catch (InterruptedException e1)
+				{
+					e1.printStackTrace();
+				}
 					
+				Platform.runLater(() ->
+				{
 					while(run == true)
 					{
+						inputField.setEditable(false);
+					
+						System.out.println("Having: " + label.getText() + 
+								" | Looking for: " + inputField.getText() + 
+								" | inputField length: " + inputField.getLength() + 
+								" | meineZahl length: " + meineZahl + 
+								" | getMeineZahl length: " + getMeineZahl());
 						while(!inputField.getText().equals(label))
 						{
+							
 							inputField.setEditable(false);
-						
+					
+							label.setText(das_affenprojekt_experimentieren.RandomTextausgabe());
 							if(winLabel.getText().equals("ERFOLG") || run == false)
 							{
 								break;
 							}
 						
+							meineZahl = inputField.getLength();
 							try
 							{
 								Thread.sleep(speed);
@@ -129,46 +145,44 @@ public class hud extends Application //Meine Hauptausführung mit der Main
 								e1.printStackTrace();
 							}
 						
-							Platform.runLater(() ->
+							if(winLabel.getText().equals("ERFOLG"))
 							{
-								System.out.println("Having: " + label.getText() + 
-										" | Looking for: " + inputField.getText() + 
-										" | inputField length: " + inputField.getLength() + 
-										" | meineZahl length: " + meineZahl + 
-										" | getMeineZahl length: " + getMeineZahl());
-							
-								label.setText(das_affenprojekt_experimentieren.RandomTextausgabe());
-							
-								meineZahl = inputField.getLength();
-							
-								if(winLabel.getText().equals("ERFOLG"))
+								label.setText(inputField.getText());
+								Platform.runLater(() ->
 								{
-									label.setText(inputField.getText());
-								}
-							});
+									System.out.println("Having: " + label.getText() + 
+											" | Looking for: " + inputField.getText() + 
+											" | inputField length: " + inputField.getLength() + 
+											" | meineZahl length: " + meineZahl + 
+											" | getMeineZahl length: " + getMeineZahl());
+							
+									label.setText(das_affenprojekt_experimentieren.RandomTextausgabe());
+							
+									meineZahl = inputField.getLength();
+					
+									if(winLabel.getText().equals("ERFOLG"))
+									{
+										label.setText(inputField.getText());
+									}
+								});
+							}
 						}
 					}
-				}
-			}
-		};
-		t.start();
-		
+				});
+ 			}
+ 		};
+ 		t.start();
+
 		startButton.setOnAction(new EventHandler<ActionEvent>()
 		{
 			@Override
 			public void handle(ActionEvent e)
 			{	
-				while(stop == false)
+				if(stop == false)
 				{
-					pseudoThreadKontrolle = true;
+					System.out.println("Start-if aktiv");
+					pseudoThreadKontrolle = false;
 					run = true;
-					
-					if(restart == true)
-					{
-						System.out.println("Start-if aktiv");
-						run = true;
-						break;
-					}
 					pb.setProgress(ProgressBar.INDETERMINATE_PROGRESS);
 				}
 			}
@@ -182,7 +196,6 @@ public class hud extends Application //Meine Hauptausführung mit der Main
 				pb.setProgress(0);
 				stopLabel.setText("Angehalten. Bitte 'Nochmal' drücken");
 
-				pseudoThreadKontrolle = false;
 				restart = false;
 				stop = true;
 				run = false;
@@ -194,10 +207,11 @@ public class hud extends Application //Meine Hauptausführung mit der Main
 			@Override
 			public void handle(ActionEvent e)
 			{
-				while(stop == true)
+				if(stop == true)
 				{
 					label.setText("");
 					stopLabel.setText("");
+					winLabel.setText("");
 					inputField.setEditable(true);
 					
 					restart = true;
@@ -206,7 +220,7 @@ public class hud extends Application //Meine Hauptausführung mit der Main
 			}
 		});
 	}
-	
+
 	public static void main(String[] args)
 	{
 		launch();
