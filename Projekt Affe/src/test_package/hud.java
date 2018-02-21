@@ -5,10 +5,16 @@ import javafx.event.ActionEvent;
 import com.sun.javafx.scene.paint.GradientUtils.Point;
 import com.sun.xml.internal.ws.wsdl.writer.document.Port;
 
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.concurrent.ScheduledService;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -19,6 +25,7 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class hud extends Application //Meine Hauptausführung mit der Main
 {
@@ -69,6 +76,7 @@ public class hud extends Application //Meine Hauptausführung mit der Main
 		stopButton.setText("Stop");
 		percentageLabel.setText("*percentageLabel*");
 		timeLabel.setText("*timeLabel*");
+		winLabel.setText("win");
 		windowVBox.getChildren().add(startButton);
 		windowVBox.getChildren().add(restartButton);
 		windowVBox.getChildren().add(stopButton);
@@ -95,89 +103,40 @@ public class hud extends Application //Meine Hauptausführung mit der Main
 			}
 		});
 		
-		MyService service = null;
-		
-		Thread t = new Thread(service)
-		{
-			@SuppressWarnings("unlikely-arg-type")
-			public void run()
-			{					
-				System.out.println("Pseudo Kontrolle aktiv");
-				
-				try
+		Timeline tl = new Timeline(new KeyFrame(
+				Duration.millis(speed),
+				ae ->
 				{
-					Thread.sleep(speed);
-				}
-				catch (InterruptedException e1)
-				{
-					e1.printStackTrace();
-				}
-					
-				Platform.runLater(() ->
-				{
-					while(run == true)
+					Platform.runLater(() ->
 					{
-						inputField.setEditable(false);
-					
-						System.out.println("Having: " + label.getText() + 
-								" | Looking for: " + inputField.getText() + 
-								" | inputField length: " + inputField.getLength() + 
-								" | meineZahl length: " + meineZahl + 
-								" | getMeineZahl length: " + getMeineZahl());
-						while(!inputField.getText().equals(label))
+						if(!winLabel.getText().equals("ERFOLG"))
 						{
-							
-							inputField.setEditable(false);
-					
-							label.setText(das_affenprojekt_experimentieren.RandomTextausgabe());
-							if(winLabel.getText().equals("ERFOLG") || run == false)
-							{
-								break;
-							}
-						
-							meineZahl = inputField.getLength();
-							try
-							{
-								Thread.sleep(speed);
-							}
-							catch (InterruptedException e1)
-							{
-								e1.printStackTrace();
-							}
-						
-							if(winLabel.getText().equals("ERFOLG"))
-							{
-								label.setText(inputField.getText());
-								Platform.runLater(() ->
-								{
-									System.out.println("Having: " + label.getText() + 
-											" | Looking for: " + inputField.getText() + 
-											" | inputField length: " + inputField.getLength() + 
-											" | meineZahl length: " + meineZahl + 
-											" | getMeineZahl length: " + getMeineZahl());
-							
-									label.setText(das_affenprojekt_experimentieren.RandomTextausgabe());
-							
-									meineZahl = inputField.getLength();
-					
-									if(winLabel.getText().equals("ERFOLG"))
-									{
-										label.setText(inputField.getText());
-									}
-								});
-							}
-						}
-					}
-				});
- 			}
- 		};
- 		t.start();
+							System.out.println("Service läuft...");
+							System.out.println("Having: " + label.getText() + 
+									" | Looking for: " + inputField.getText() + 
+									" | inputField length: " + inputField.getLength() + 
+									" | meineZahl length: " + meineZahl + 
+									" | getMeineZahl length: " + getMeineZahl());
 
+							meineZahl = inputField.getLength();
+							label.setText(das_affenprojekt_experimentieren.RandomTextausgabe());
+						}
+					});
+				}));
+		tl.setCycleCount(Animation.INDEFINITE);
+		
+		
+		
 		startButton.setOnAction(new EventHandler<ActionEvent>()
 		{
 			@Override
 			public void handle(ActionEvent e)
-			{	
+			{
+		 		tl.play();
+				inputField.setEditable(false);
+				System.out.println("start button pressed");
+				//service.restart();
+				
 				if(stop == false)
 				{
 					System.out.println("Start-if aktiv");
@@ -195,7 +154,7 @@ public class hud extends Application //Meine Hauptausführung mit der Main
 			{
 				pb.setProgress(0);
 				stopLabel.setText("Angehalten. Bitte 'Nochmal' drücken");
-
+				tl.stop();
 				restart = false;
 				stop = true;
 				run = false;
@@ -209,16 +168,23 @@ public class hud extends Application //Meine Hauptausführung mit der Main
 			{
 				if(stop == true)
 				{
+					inputField.setEditable(true);
 					label.setText("");
 					stopLabel.setText("");
 					winLabel.setText("");
 					inputField.setEditable(true);
+					//service.cancel();
 					
 					restart = true;
 					stop = false;
 				}
 			}
 		});
+	}
+
+	private void tlstop() {
+		// TODO Auto-generated method stub
+		
 	}
 
 	public static void main(String[] args)

@@ -15,11 +15,16 @@
 <fullyQualifiedTypeName name="java.util.logging.Level"/>
 <fullyQualifiedTypeName name="gdi.game.overlay.Button"/>
 <fullyQualifiedTypeName name="java.lang.ThreadDeath"/>
-<fullyQualifiedTypeName name="java.lang.Thread"/>
 <fullyQualifiedTypeName name="javafx.scene.control.ProgressBar"/>
 <fullyQualifiedTypeName name="javafx.scene.control.ProgressIndicator"/>
 <fullyQualifiedTypeName name="javafx.application.Platform"/>
-<fullyQualifiedTypeName name="javafx.concurrent.Task"/>
-<fullyQualifiedTypeName name="javafx.concurrent.Service"/>
 <fullyQualifiedTypeName name="javafx.scene.control.Label"/>
+<fullyQualifiedTypeName name="javafx.concurrent.Service"/>
+<fullyQualifiedTypeName name="javafx.concurrent.Task"/>
+<fullyQualifiedTypeName name="javafx.concurrent.ScheduledService"/>
+<fullyQualifiedTypeName name="javafx.util.Duration"/>
+<fullyQualifiedTypeName name="java.lang.Thread"/>
+<fullyQualifiedTypeName name="javafx.animation.KeyFrame"/>
+<fullyQualifiedTypeName name="javafx.animation.Timeline"/>
+<fullyQualifiedTypeName name="javafx.animation.Animation"/>
 </qualifiedTypeNameHistroy>
