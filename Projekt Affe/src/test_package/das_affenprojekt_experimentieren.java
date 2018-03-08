@@ -2,11 +2,8 @@ package test_package;
 
 import java.util.Random;
 
-import javafx.scene.control.Label;
-
 public class das_affenprojekt_experimentieren //extends Label
 {
-	
 	public static String RandomTextausgabe() //throws InterruptedException //Die Methode, das zufällige CharArray zu bauen
 	{		
 		char[] zahl = "abcdefghijklmnopqrstuvwxyz".toCharArray(); //Das Alphabet als Pool für das Array

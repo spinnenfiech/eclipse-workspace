@@ -1,10 +1,6 @@
 package test_package;
 
 import javafx.event.ActionEvent;
-
-import com.sun.javafx.scene.paint.GradientUtils.Point;
-import com.sun.xml.internal.ws.wsdl.writer.document.Port;
-
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -12,15 +8,11 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.concurrent.ScheduledService;
-import javafx.concurrent.Service;
-import javafx.concurrent.Task;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.Labeled;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.layout.VBox;
@@ -31,7 +23,7 @@ public class hud extends Application //Meine Hauptausführung mit der Main
 {
 	static int meineZahl;
 	
-	public int speed = 10;
+	public int speed = 1;
 	
 	boolean restart = false;
 	boolean run = false;
@@ -43,7 +35,7 @@ public class hud extends Application //Meine Hauptausführung mit der Main
 		hud.meineZahl = neueZahl;
 	}
 
-	static int getMeineZahl()
+	public static int getMeineZahl()
 	{
 		return meineZahl;
 	}
@@ -180,11 +172,6 @@ public class hud extends Application //Meine Hauptausführung mit der Main
 				}
 			}
 		});
-	}
-
-	private void tlstop() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	public static void main(String[] args)
